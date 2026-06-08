@@ -1,5 +1,5 @@
-#🚗 Carzio – Fake Advertisement Detection using NLP
-#📌 Overview
+# 🚗 Carzio – Fake Advertisement Detection using NLP
+# 📌 Overview
 
 Carzio is a Machine Learning and Natural Language Processing (NLP) based Final Year Project designed to detect fake or misleading advertisements. It classifies advertisement text into real or fake categories using text processing and supervised learning techniques.
 
@@ -9,7 +9,7 @@ This project helps reduce online fraud by automatically analyzing ad content and
 
 Online platforms contain large amounts of misleading and fake advertisements. Manual verification is not scalable. This project aims to automate fake ad detection using machine learning.
 
-#⚙️ How It Works
+# ⚙️ How It Works
 User enters advertisement text
 Text is cleaned and preprocessed (lowercasing, stopword removal, tokenization)
 Features are extracted using NLP techniques (TF-IDF / CountVectorizer)
@@ -23,7 +23,7 @@ Scikit-learn
 Pandas / NumPy
 Flask (if backend used)
 HTML / CSS / JavaScript (frontend)
-📂 Project Structure
+# 📂 Project Structure
 
 Carzio/
 │
@@ -36,7 +36,7 @@ Carzio/
 ├── requirements.txt
 └── README.md
 
-#🚀 Installation & Setup
+# 🚀 Installation & Setup
 1. Clone repository
 git clone https://github.com/your-username/carzio.git
 cd carzio
@@ -49,20 +49,18 @@ Model Used: (e.g., Logistic Regression / Naive Bayes / SVM)
 Feature Extraction: TF-IDF / Bag of Words
 Accuracy: XX% (add your result)
 Dataset: Custom / Kaggle dataset
-#📸 Screenshots
+# 📸 Screenshots
 Home Page
 
-Prediction Result
-
-#💡 Key Features
+# 💡 Key Features
 Real-time fake ad detection
 NLP-based text classification
 Simple and user-friendly interface
 Lightweight ML model (fast predictions)
-#👨‍💻 Author
+# 👨‍💻 Author
 Muhammad Jamshaid Rasheed
 Final Year Computer Science Student
 AI / Machine Learning Enthusiast
-#📄 License
+# 📄 License
 
 This project is for academic and educational purposes only.
