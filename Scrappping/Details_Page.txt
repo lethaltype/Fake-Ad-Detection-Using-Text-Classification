@@ -1,0 +1,64 @@
+import csv
+import requests
+from bs4 import BeautifulSoup
+
+
+def Car_Data(url):
+    # Step 1: Get the HTML
+    r = requests.get(url)
+    htmlContent = r.content
+    #print(htmlContent)
+
+    # Step 2: Parse the HTML
+    soup = BeautifulSoup(htmlContent, 'html.parser')
+    #print(soup.prettify)
+
+    # Step 3: HTML Tree traversal
+    # Get the title of the HTML page
+    title = soup.title.string
+    title=str(title)
+    split_string = title.split("20", 1)
+    car_name = split_string[0]
+    print(car_name)
+    # Get all the Seller's Comments  from the page
+    comment_class = soup.find('h2', id="scroll_seller_comments")
+    comment_div = comment_class.find_next_sibling('div')
+    #print(comment_class.text)
+    sellers_comment=comment_div.text
+    sellers_comment=str(sellers_comment)
+    split_string = sellers_comment.split("Mention", 1)
+    s_comment = split_string[0]
+    print(s_comment)
+    #Get the Car deatils from web page
+    details_class = soup.find('ul', id="scroll_car_detail")
+    car_details=details_class.text
+    car_details=car_details.split('\n')
+    print(car_details)
+    #Get Car Info
+    data = []
+    table = soup.find('table', attrs={'class':"table table-bordered text-center table-engine-detail fs16"})
+    table_body = table.find('tbody')
+
+    rows = table_body.find_all('tr')
+    for row in rows:
+        cols = row.find_all('td')
+        cols = [ele.text.strip() for ele in cols]
+        data.append([ele for ele in cols if ele])
+    print(data)
+    new_data=[]
+    for i in data:
+        new_data=i
+    print(new_data)
+    #newRow=[title,sellers_comment]
+    newRow = [car_name,new_data[0],new_data[1],new_data[2],new_data[3],car_details[2],car_details[4],car_details[6],car_details[8],car_details[10],car_details[12],car_details[14],s_comment]
+    #Writting data in CSV File
+    with open('C:/Users/aghaq/PycharmProjects/FYP/data.csv', 'a+', newline='') as write_obj:
+        csv_writer = csv.writer(write_obj)  # Create a writer object from csv module
+        csv_writer.writerow(newRow)  # Add contents of list as last row in the csv file
+
+
+#url = "https://www.pakwheels.com/used-cars/honda-vezel-2015-for-sale-in-lahore-4269148"
+#url="https://www.pakwheels.com/used-cars/honda-vezel-2014-for-sale-in-lahore-4260080"
+#url='https://www.pakwheels.com/used-cars/toyota-prius-2017-for-sale-in-lahore-4158757'
+#url='https://www.pakwheels.com/used-cars/toyota-yaris-2020-for-sale-in-islamabad-4315382'
+#Car_Data(url)

@@ -1,0 +1,41 @@
+from bs4 import BeautifulSoup
+import requests
+from FYP_Scrapping import Car_Data
+
+
+
+#r = requests.get("https://www.pakwheels.com/used-cars/search/-/featured_1/")
+for i in range(4,5):
+    page_link='https://www.pakwheels.com/used-cars/search/-/featured_1/?page='+str(i+1)
+    print(page_link)
+    r=requests.get(page_link)
+    data = r.text
+    soup = BeautifulSoup(data,"html.parser")
+    links_array=[]
+    for link in soup.find_all("a",href=True):
+
+        links_rec=link['href']
+        links_rec=links_rec.split('/n')
+        #print(links_rec)
+        list1 = ['/used-cars/']
+        filter_data = [x for x in links_rec if
+                       all(y  in x for y in list1)]
+        list2=['/search/-','/sell/','/duplicate-book/','/small/','/big/','/modified/','featured=1','/pakwheels-certified/']
+        filter_data = [x for x in filter_data if
+                       all(y not in x for y in list2)]
+        links_array.append(filter_data)
+    print(links_array)
+    links_array=list(filter(None, links_array))
+    links_array.remove(links_array[0])
+    print(len(links_array))
+    new_link_aray=[]
+    new_link_aray = [i for n, i in enumerate(links_array) if i not in links_array[:n]]
+    print(len(new_link_aray))
+    for i in new_link_aray:
+        tail_link=''.join(i)
+        base_link = 'www.pakwheels.com'
+        final_link ='https://'+ base_link + tail_link
+        print(final_link)
+        #Car_Data(final_link)
+
+
