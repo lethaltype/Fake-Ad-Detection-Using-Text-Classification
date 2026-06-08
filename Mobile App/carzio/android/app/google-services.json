@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "801338590074",
+    "project_id": "carzio-ed49e",
+    "storage_bucket": "carzio-ed49e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:801338590074:android:5f0d144388a477c24dccc3",
+        "android_client_info": {
+          "package_name": "com.example.carzio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "801338590074-ep8mghgbpdsuf3mkugmuroc5ibsp3pk9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdU-raasQtH11vB0HpUnyRLBzHmvnNH_4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "801338590074-ep8mghgbpdsuf3mkugmuroc5ibsp3pk9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
