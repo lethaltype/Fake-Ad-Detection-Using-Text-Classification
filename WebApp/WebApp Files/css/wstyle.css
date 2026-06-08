@@ -1,0 +1,152 @@
+body{
+	margin:0;
+	padding:0;
+	background: url(../1.jpg) no-repeat center center fixed;
+	background-size: cover;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	font-family: sans-serif;
+
+}
+
+.brand h1 {
+	font-size: 8rem;
+	margin-left: 600px;
+	margin-top: 300px;
+	text-transform: uppercase;
+	color: white;
+}
+.brand h1 span {
+	color: crimson;
+}
+
+
+body::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 100%;
+	width: 100%;
+	background-color: black;
+	opacity: 0.7;
+	z-index: -1;
+}
+
+
+
+form{
+	border: 1px solid #99bbff;
+	padding: 30px;
+
+}
+.login_box, .signup_box{
+	background-color: rgba(255, 153, 0, 0.26);
+	position: absolute;
+	top:50%;
+	left:20%;
+	transform: translate(-50%, -46%);
+	padding-top: 10px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 15px;
+    border-color:#d2d2d2;
+    border-width: 5px;
+    color:#ff0000;
+    box-shadow:-10px -10px 9px #0254f76c;
+}
+.user{
+	width: 120px;
+    height:120px;
+	position: absolute;
+	top:-70px;
+	left: 90px;
+	
+
+}
+h3{
+	color: rgb(255, 255, 255);
+	font-size: 1rem;
+	margin-top: 30px;
+	margin-left: 80px;
+	line-height: 2.5rem;
+	font-weight: 700;
+	letter-spacing: 0.05rem;
+	text-shadow: rgba(43, 7, 245, 0.418);
+
+}
+
+p{
+	color: #fff;
+	margin: 0;
+	padding:0;
+	font-weight: bold;
+}
+input{
+	width:100%;
+	margin-bottom: 10px;
+
+}
+input[type="text"], input[type="password"], input[type="email"]{
+	border:none;
+	border-bottom: .5px solid #fff;
+	background: transparent; 
+	outline:none;
+	height:40px;
+	color:#f5f5f0;
+	font-size: 15px;
+}
+input[type="submit"]{
+	border:none;
+	outline:none;
+	background:#1a1aff;
+	font-size: 20px;
+	color:#fff;
+	border-radius: 30px;
+	font-family: Century Gothic;
+	font-weight: bold;
+	transition: 0.6s ease;
+
+}
+input[type="submit"]:hover{
+	cursor:pointer;
+	background:#e6b800; 
+	transition: 0.6s ease;
+}
+a{
+	text-decoration: none;
+	color:#fff;
+	font-size:15px;
+	line-height:15px;
+
+}
+span{
+	font-weight: bold;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    
+	 <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
+	 <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-database.js"></script>
+
+    <!--Adding Bootstrap-->    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+ 	<title>Sign Up</title>
+ 	<link rel="stylesheet" type="text/css" href="css/wstyle.css">
+ </head>
+ <body>
+	 <section id="header">
+	<div class="brand">
+	  
+		<h1><span>C</span>AR<span>Z</span>IO</h1>
+	  
+</div>
+</section>	
+ <div class="signup_box">
+	 
+ 	<img class="user" src="letterR.png" alt="img woman">
+ 	<h3>SIGNUP</h3>
+
+ 	<p>User Name</p>
+ 	<input type="text" name="signup_username" placeholder="Enter Username">
+ 	<p>Email</p>
+	 <input type="text" class="form-control shadow-sm" placeholder="Enter Email id" id="txtEmail" name="email">
+ 	<p>Password</p>
+	 <input type="password" class="form-control shadow-sm" placeholder="Password" id="txtPassword" name="password">
+ 	<p>Retype Password</p>
+ 	<input type="password" name="repwd" placeholder="Re-Enter pasword"><br>
+	 <div id="errorbox"></div><br>
+
+	 <button type="submit" class="btn btn-warning shadow" id="btnSignup">Signup</button>
+        
+ 	<a href="windex.html">Existing user? Login </a>
+ </div>
+ <script type="text/javascript" src="script.js"></script>
+ </body>
+ </html> 
