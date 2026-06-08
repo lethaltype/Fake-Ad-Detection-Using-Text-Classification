@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fake Ad Detection — Final Year Project Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0c0f;
+    --surface: #131519;
+    --surface2: #1a1d23;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #f0ede8;
+    --muted: #8a8780;
+    --dim: #4a4845;
+    --gold: #f0b429;
+    --gold-dim: rgba(240,180,41,0.12);
+    --green: #3ecf8e;
+    --green-dim: rgba(62,207,142,0.1);
+    --red: #ff5f5f;
+    --red-dim: rgba(255,95,95,0.1);
+    --blue: #5b8dee;
+    --blue-dim: rgba(91,141,238,0.1);
+    --purple: #a78bfa;
+    --accent-line: 3px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── Layout ── */
+  .page { max-width: 900px; margin: 0 auto; padding: 60px 32px 80px; }
+
+  /* ── Animations ── */
+  @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+  @keyframes bar-fill { from { width: 0; } to { width: var(--w); } }
+  .fade-in { animation: fadeUp 0.6s ease both; }
+  .fade-in-2 { animation: fadeUp 0.6s 0.15s ease both; }
+  .fade-in-3 { animation: fadeUp 0.6s 0.3s ease both; }
+  .fade-in-4 { animation: fadeUp 0.6s 0.45s ease both; }
+
+  /* ── Header ── */
+  .header-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .header-tag::before {
+    content: '';
+    display: inline-block;
+    width: 28px;
+    height: 1px;
+    background: var(--gold);
+  }
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  h1 .accent { color: var(--gold); }
+  .subtitle {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 520px;
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+
+  /* ── Badges ── */
+  .badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 40px; }
+  .badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .badge.gold { border-color: rgba(240,180,41,0.3); color: var(--gold); background: var(--gold-dim); }
+  .badge.green { border-color: rgba(62,207,142,0.3); color: var(--green); background: var(--green-dim); }
+  .badge.blue { border-color: rgba(91,141,238,0.3); color: var(--blue); background: var(--blue-dim); }
+
+  /* ── Section headings ── */
+  .section { margin-bottom: 56px; }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── Metrics ── */
+  .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 40px; }
+  .metric {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 16px;
+    text-align: center;
+  }
+  .metric-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .metric-label { font-size: 11px; color: var(--muted); margin-top: 6px; }
+
+  /* ── Two column cards ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .card.red-accent { border-left: var(--accent-line) solid var(--red); }
+  .card.green-accent { border-left: var(--accent-line) solid var(--green); }
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title .icon { font-size: 16px; }
+  .card p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+  /* ── Pipeline steps ── */
+  .pipeline { display: flex; flex-direction: column; gap: 0; }
+  .step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .step-left { display: flex; flex-direction: column; align-items: center; }
+  .step-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    flex-shrink: 0;
+    border: 1px solid var(--border2);
+    background: var(--surface);
+    color: var(--muted);
+  }
+  .step-num.active { background: var(--gold-dim); border-color: rgba(240,180,41,0.4); color: var(--gold); }
+  .step-line { width: 1px; flex: 1; min-height: 24px; background: var(--border); margin: 4px 0; }
+  .step-content {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    flex: 1;
+    margin-bottom: 8px;
+  }
+  .step-content h3 { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .step-content p { font-size: 12px; color: var(--muted); line-height: 1.6; }
+  .step-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-right: 4px;
+    margin-top: 6px;
+    display: inline-block;
+  }
+
+  /* ── Phone frames ── */
+  .phones-row { display: flex; gap: 16px; flex-wrap: wrap; }
+  .phone-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .phone-frame {
+    width: 148px;
+    background: #1c1c1e;
+    border-radius: 32px;
+    padding: 10px;
+    border: 2px solid #2a2a2a;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+    position: relative;
+  }
+  .phone-notch {
+    width: 50px;
+    height: 5px;
+    background: #111;
+    border-radius: 3px;
+    margin: 0 auto 8px;
+  }
+  .phone-screen {
+    background: #0d0d0d;
+    border-radius: 22px;
+    overflow: hidden;
+    min-height: 260px;
+    display: flex;
+    flex-direction: column;
+  }
+  .phone-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--dim); letter-spacing: 0.05em; }
+
+  /* ── Browser frame ── */
+  .browser-frame {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .browser-bar {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .dot { width: 9px; height: 9px; border-radius: 50%; }
+  .url-pill {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  /* ── Algo bars ── */
+  .algo-list { display: flex; flex-direction: column; gap: 2px; }
+  .algo-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .algo-row:last-child { border-bottom: none; }
+  .algo-name { font-size: 13px; color: var(--text); width: 200px; flex-shrink: 0; }
+  .algo-bar-wrap { flex: 1; background: var(--surface2); border-radius: 4px; height: 6px; overflow: hidden; }
+  .algo-bar { height: 100%; border-radius: 4px; animation: bar-fill 1.2s ease both; }
+  .algo-score { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; width: 44px; text-align: right; }
+  .deployed-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    padding: 2px 7px;
+    border-radius: 3px;
+    background: var(--green-dim);
+    color: var(--green);
+    border: 1px solid rgba(62,207,142,0.25);
+    letter-spacing: 0.04em;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  /* ── Tech grid ── */
+  .tech-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .tech-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .tech-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .tech-name { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600; }
+  .tech-desc { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+  /* ── Footer ── */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding-top: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer p { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--dim); }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .metrics-grid { grid-template-columns: repeat(2,1fr); }
+    .two-col { grid-template-columns: 1fr; }
+    .tech-grid { grid-template-columns: repeat(2,1fr); }
+    h1 { font-size: 36px; }
+    .phones-row { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── HEADER ── -->
+  <div class="section fade-in">
+    <div class="header-tag">Final Year Project &mdash; Computer Science</div>
+    <h1>Fake Ad <span class="accent">Detection</span><br>using Text Classification</h1>
+    <p class="subtitle">An end-to-end NLP system that automatically identifies fake and dealer car listings on PakWheels — deployed as a mobile app, web platform, and REST API.</p>
+    <div class="badges">
+      <span class="badge gold">Python</span>
+      <span class="badge gold">Flask</span>
+      <span class="badge gold">Scikit-learn</span>
+      <span class="badge gold">TensorFlow / Keras</span>
+      <span class="badge blue">Flutter</span>
+      <span class="badge blue">Firebase</span>
+      <span class="badge blue">Dart</span>
+      <span class="badge green">NLP</span>
+      <span class="badge green">Machine Learning</span>
+      <span class="badge">BeautifulSoup</span>
+      <span class="badge">NLTK</span>
+      <span class="badge">Gensim</span>
+      <span class="badge">REST API</span>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics-grid">
+      <div class="metric">
+        <div class="metric-num">88%</div>
+        <div class="metric-label">Best model accuracy</div>
+      </div>
+      <div class="metric">
+        <div class="metric-num">5</div>
+        <div class="metric-label">ML models compared</div>
+      </div>
+      <div class="metric">
+        <div class="metric-num">3</div>
+        <div class="metric-label">Platforms delivered</div>
+      </div>
+      <div class="metric">
+        <div class="metric-num">7</div>
+        <div class="metric-label">NLP pipeline steps</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PROBLEM & SOLUTION ── -->
+  <div class="section fade-in-2">
+    <div class="section-label">The Problem &amp; Solution</div>
+    <div class="two-col">
+      <div class="card red-accent">
+        <div class="card-title"><span class="icon">⚠</span> The Problem</div>
+        <p>Car dealers on PakWheels routinely post ads posing as private sellers — misleading buyers with inflated prices and hidden commission fees. Spotting them manually is tedious and unreliable at scale.</p>
+      </div>
+      <div class="card green-accent">
+        <div class="card-title"><span class="icon">✦</span> The Solution — Carzio</div>
+        <p>An AI-powered mobile app and web platform. Paste any PakWheels listing URL, and the NLP + ML pipeline analyses the seller's comment text to instantly return a verdict: <strong style="color:var(--green);">Genuine</strong> or <strong style="color:var(--red);">Dealer</strong>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── HOW IT WORKS ── -->
+  <div class="section fade-in-2">
+    <div class="section-label">End-to-End Pipeline</div>
+    <div class="pipeline">
+
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num active">01</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+          <h3>User pastes a PakWheels URL</h3>
+          <p>Into the Carzio mobile app (Flutter) or web browser. A POST request is sent to the Flask API's <code style="color:var(--gold); font-family:'DM Mono',monospace;">/link</code> endpoint.</p>
+          <span class="step-tag" style="background:var(--blue-dim); color:var(--blue); border:1px solid rgba(91,141,238,0.2);">Flutter App</span>
+          <span class="step-tag" style="background:var(--blue-dim); color:var(--blue); border:1px solid rgba(91,141,238,0.2);">Web App</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num active">02</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+          <h3>Web scraper extracts seller comment</h3>
+          <p>Python Requests + BeautifulSoup parses the listing page HTML, extracting the seller's written description — the primary feature for classification.</p>
+          <span class="step-tag" style="background:var(--gold-dim); color:var(--gold); border:1px solid rgba(240,180,41,0.2);">BeautifulSoup</span>
+          <span class="step-tag" style="background:var(--gold-dim); color:var(--gold); border:1px solid rgba(240,180,41,0.2);">Requests</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num active">03</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+          <h3>NLP pre-processing pipeline</h3>
+          <p>7-step pipeline: lowercase → punctuation removal → number conversion → whitespace strip → stopword removal → stemming (Porter) → lemmatization (WordNet).</p>
+          <span class="step-tag" style="background:rgba(167,139,250,0.1); color:var(--purple); border:1px solid rgba(167,139,250,0.2);">NLTK</span>
+          <span class="step-tag" style="background:rgba(167,139,250,0.1); color:var(--purple); border:1px solid rgba(167,139,250,0.2);">inflect</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num active">04</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+          <h3>N-gram TF-IDF vectorisation + Naive Bayes</h3>
+          <p>Bigram &amp; trigram TF-IDF (max 5,000 features) transforms clean text into vectors. The trained Naive Bayes model predicts the label. Model serialised via <code style="color:var(--gold); font-family:'DM Mono',monospace;">joblib</code>.</p>
+          <span class="step-tag" style="background:var(--green-dim); color:var(--green); border:1px solid rgba(62,207,142,0.2);">Scikit-learn</span>
+          <span class="step-tag" style="background:var(--green-dim); color:var(--green); border:1px solid rgba(62,207,142,0.2);">TF-IDF</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num" style="border-color:rgba(62,207,142,0.4); color:var(--green); background:var(--green-dim);">05</div>
+        </div>
+        <div class="step-content" style="border-color:rgba(62,207,142,0.2);">
+          <h3 style="color:var(--green);">Result returned instantly</h3>
+          <p>Flask <code style="color:var(--gold); font-family:'DM Mono',monospace;">/results</code> endpoint returns JSON. The app displays <strong style="color:var(--green);">Genuine Seller</strong> or <strong style="color:var(--red);">Dealer Detected</strong> to the user in real time.</p>
+          <span class="step-tag" style="background:var(--gold-dim); color:var(--gold); border:1px solid rgba(240,180,41,0.2);">Flask API</span>
+          <span class="step-tag" style="background:var(--gold-dim); color:var(--gold); border:1px solid rgba(240,180,41,0.2);">JSON response</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── MOBILE APP MOCKUPS ── -->
+  <div class="section fade-in-3">
+    <div class="section-label">Mobile App — Carzio (Flutter)</div>
+    <div class="phones-row">
+
+      <!-- Splash -->
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-screen" style="height:264px; align-items:center; justify-content:center; gap:10px; padding:20px;">
+            <div style="width:70px; height:70px; background:#1a1a1a; border-radius:18px; border:1px solid #2a2a2a; display:flex; align-items:center; justify-content:center; font-size:30px;">🚗</div>
+            <p style="color:#f0ede8; font-size:12px; font-weight:600; text-align:center; line-height:1.4; font-family:'DM Sans',sans-serif;">Carzio!<br><span style="color:#f0b429;">The Genuine Deals</span></p>
+            <div style="width:36px; height:2px; border-radius:2px; background:#f0b429; margin-top:4px;"></div>
+            <p style="color:#4a4845; font-size:9px; font-family:'DM Mono',monospace; margin-top:4px;">Loading...</p>
+          </div>
+        </div>
+        <span class="phone-label">Splash screen</span>
+      </div>
+
+      <!-- Home -->
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-screen" style="height:264px; align-items:center; justify-content:center; gap:10px; padding:20px;">
+            <div style="width:60px; height:60px; background:#1a1a1a; border-radius:16px; border:1px solid #2a2a2a; display:flex; align-items:center; justify-content:center; font-size:26px;">🚗</div>
+            <div style="width:100%; background:#f0ede8; border-radius:12px; padding:9px 14px; text-align:center; margin-top:6px;">
+              <p style="color:#0b0c0f; font-size:11px; font-weight:600; font-family:'DM Sans',sans-serif;">Sign Up</p>
+            </div>
+            <div style="width:100%; background:#f0ede8; border-radius:12px; padding:9px 14px; text-align:center;">
+              <p style="color:#0b0c0f; font-size:11px; font-weight:600; font-family:'DM Sans',sans-serif;">Sign In</p>
+            </div>
+            <p style="color:#4a4845; font-size:9px; font-family:'DM Mono',monospace; margin-top:6px;">Powered by Firebase Auth</p>
+          </div>
+        </div>
+        <span class="phone-label">Home / auth</span>
+      </div>
+
+      <!-- Checker -->
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-screen" style="height:264px; padding:18px; gap:8px; justify-content:center;">
+            <p style="color:#8a8780; font-size:9px; font-family:'DM Mono',monospace; margin-bottom:4px;">PASTE AD URL</p>
+            <div style="background:#1a1a1a; border-radius:8px; padding:8px 10px; border:1px solid #2a2a2a;">
+              <p style="color:#4a4845; font-size:8px; font-family:'DM Mono',monospace;">pakwheels.com/used-cars/…</p>
+            </div>
+            <div style="background:#f0b429; border-radius:10px; padding:7px; text-align:center; margin-top:4px;">
+              <p style="color:#0b0c0f; font-size:10px; font-weight:700; font-family:'DM Sans',sans-serif;">Check Ad ↗</p>
+            </div>
+            <div style="background:rgba(62,207,142,0.08); border:1px solid rgba(62,207,142,0.25); border-radius:10px; padding:12px; text-align:center; margin-top:8px;">
+              <p style="color:#3ecf8e; font-size:9px; font-family:'DM Mono',monospace; margin-bottom:4px;">RESULT</p>
+              <p style="color:#f0ede8; font-size:18px; font-weight:700; font-family:'Syne',sans-serif;">Genuine ✓</p>
+              <p style="color:#3ecf8e; font-size:8px; margin-top:2px;">Safe to proceed</p>
+            </div>
+          </div>
+        </div>
+        <span class="phone-label">Genuine result</span>
+      </div>
+
+      <!-- Dealer result -->
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-screen" style="height:264px; padding:18px; gap:8px; justify-content:center;">
+            <p style="color:#8a8780; font-size:9px; font-family:'DM Mono',monospace; margin-bottom:4px;">PASTE AD URL</p>
+            <div style="background:#1a1a1a; border-radius:8px; padding:8px 10px; border:1px solid #333;">
+              <p style="color:#8a8780; font-size:8px; font-family:'DM Mono',monospace;">pakwheels.com/used-cars/…</p>
+            </div>
+            <div style="background:#f0b429; border-radius:10px; padding:7px; text-align:center; margin-top:4px;">
+              <p style="color:#0b0c0f; font-size:10px; font-weight:700; font-family:'DM Sans',sans-serif;">Check Ad ↗</p>
+            </div>
+            <div style="background:rgba(255,95,95,0.08); border:1px solid rgba(255,95,95,0.25); border-radius:10px; padding:12px; text-align:center; margin-top:8px;">
+              <p style="color:#ff5f5f; font-size:9px; font-family:'DM Mono',monospace; margin-bottom:4px;">RESULT</p>
+              <p style="color:#f0ede8; font-size:18px; font-weight:700; font-family:'Syne',sans-serif;">Dealer ⚠</p>
+              <p style="color:#ff5f5f; font-size:8px; margin-top:2px;">Price likely inflated</p>
+            </div>
+          </div>
+        </div>
+        <span class="phone-label">Dealer detected</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── WEB APP MOCKUP ── -->
+  <div class="section fade-in-3">
+    <div class="section-label">Web Application</div>
+    <div class="browser-frame">
+      <div class="browser-bar">
+        <div class="dot" style="background:#ff5f5f;"></div>
+        <div class="dot" style="background:#f0b429;"></div>
+        <div class="dot" style="background:#3ecf8e;"></div>
+        <div class="url-pill">carzio.app / detect</div>
+      </div>
+      <!-- Site content -->
+      <div style="background:#0f1114; padding:0;">
+        <!-- Nav -->
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 24px; border-bottom:1px solid rgba(255,255,255,0.06);">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:16px;">🚗</span>
+            <span style="font-family:'Syne',sans-serif; font-size:15px; font-weight:700; color:#f0ede8;">Carzio</span>
+          </div>
+          <div style="display:flex; gap:20px; font-size:11px; color:#8a8780; font-family:'DM Sans',sans-serif;">
+            <span>Home</span><span>How it works</span><span style="color:#f0b429;">Sign in</span>
+          </div>
+        </div>
+        <!-- Hero -->
+        <div style="padding:32px 24px; display:flex; gap:28px; align-items:flex-start;">
+          <div style="flex:1;">
+            <p style="font-family:'DM Mono',monospace; font-size:10px; color:#f0b429; letter-spacing:0.1em; margin-bottom:10px; text-transform:uppercase;">AI-Powered Ad Verification</p>
+            <p style="font-family:'Syne',sans-serif; font-size:22px; font-weight:700; color:#f0ede8; margin-bottom:10px; line-height:1.2;">Is that car seller <span style="color:#3ecf8e;">genuine</span><br>or a dealer in disguise?</p>
+            <p style="font-size:12px; color:#8a8780; margin-bottom:18px; line-height:1.7;">Paste any PakWheels URL — our NLP model analyses the seller's comment and flags dealers in under a second.</p>
+            <!-- Input -->
+            <div style="display:flex; gap:8px; margin-bottom:14px;">
+              <div style="flex:1; background:#1a1d23; border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:9px 14px;">
+                <p style="font-family:'DM Mono',monospace; font-size:10px; color:#4a4845;">https://www.pakwheels.com/used-cars/...</p>
+              </div>
+              <div style="background:#f0b429; border-radius:8px; padding:9px 18px; display:flex; align-items:center; cursor:pointer;">
+                <p style="font-size:12px; color:#0b0c0f; font-weight:700; white-space:nowrap; font-family:'DM Sans',sans-serif;">Check Ad</p>
+              </div>
+            </div>
+            <!-- Result tiles -->
+            <div style="display:flex; gap:10px;">
+              <div style="flex:1; background:rgba(62,207,142,0.06); border:1px solid rgba(62,207,142,0.2); border-radius:10px; padding:10px 14px; display:flex; align-items:center; gap:10px;">
+                <span style="font-size:18px;">✅</span>
+                <div>
+                  <p style="font-size:11px; color:#3ecf8e; font-weight:600; font-family:'Syne',sans-serif;">Genuine Private Seller</p>
+                  <p style="font-size:10px; color:#8a8780; margin-top:1px;">Safe to proceed with inquiry</p>
+                </div>
+              </div>
+              <div style="flex:1; background:rgba(255,95,95,0.06); border:1px solid rgba(255,95,95,0.2); border-radius:10px; padding:10px 14px; display:flex; align-items:center; gap:10px;">
+                <span style="font-size:18px;">⚠️</span>
+                <div>
+                  <p style="font-size:11px; color:#ff5f5f; font-weight:600; font-family:'Syne',sans-serif;">Dealer / Reseller Detected</p>
+                  <p style="font-size:10px; color:#8a8780; margin-top:1px;">Prices may be inflated</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Right panel -->
+          <div style="width:170px; flex-shrink:0;">
+            <div style="background:#1a1d23; border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:18px; text-align:center;">
+              <p style="font-family:'DM Mono',monospace; font-size:9px; color:#4a4845; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:12px;">Model accuracy</p>
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <div>
+                  <div style="display:flex; justify-content:space-between; font-size:10px; margin-bottom:4px;">
+                    <span style="color:#8a8780; font-family:'DM Mono',monospace;">SVM</span>
+                    <span style="color:#f0b429; font-family:'DM Mono',monospace; font-weight:500;">88%</span>
+                  </div>
+                  <div style="height:4px; background:#1c1c1c; border-radius:2px;"><div style="width:88%; height:100%; background:#f0b429; border-radius:2px;"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex; justify-content:space-between; font-size:10px; margin-bottom:4px;">
+                    <span style="color:#8a8780; font-family:'DM Mono',monospace;">Naive Bayes</span>
+                    <span style="color:#5b8dee; font-family:'DM Mono',monospace; font-weight:500;">85%</span>
+                  </div>
+                  <div style="height:4px; background:#1c1c1c; border-radius:2px;"><div style="width:85%; height:100%; background:#5b8dee; border-radius:2px;"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex; justify-content:space-between; font-size:10px; margin-bottom:4px;">
+                    <span style="color:#8a8780; font-family:'DM Mono',monospace;">LSTM</span>
+                    <span style="color:#a78bfa; font-family:'DM Mono',monospace; font-weight:500;">84%</span>
+                  </div>
+                  <div style="height:4px; background:#1c1c1c; border-radius:2px;"><div style="width:84%; height:100%; background:#a78bfa; border-radius:2px;"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MODEL COMPARISON ── -->
+  <div class="section fade-in-4">
+    <div class="section-label">ML Model Comparison</div>
+    <div class="card">
+      <div class="algo-list">
+
+        <div class="algo-row">
+          <div class="algo-name">
+            SVM (TF-IDF)
+            <span class="deployed-tag">deployed</span>
+          </div>
+          <div class="algo-bar-wrap">
+            <div class="algo-bar" style="--w:88%; width:88%; background:linear-gradient(90deg,#f0b429,#f0b42999);"></div>
+          </div>
+          <div class="algo-score" style="color:var(--gold);">88%</div>
+        </div>
+
+        <div class="algo-row">
+          <div class="algo-name">Naive Bayes (TF-IDF)</div>
+          <div class="algo-bar-wrap">
+            <div class="algo-bar" style="--w:85%; width:85%; background:#5b8dee;"></div>
+          </div>
+          <div class="algo-score" style="color:var(--blue);">85%</div>
+        </div>
+
+        <div class="algo-row">
+          <div class="algo-name">LSTM (Doc2Vec)</div>
+          <div class="algo-bar-wrap">
+            <div class="algo-bar" style="--w:84%; width:84%; background:#a78bfa;"></div>
+          </div>
+          <div class="algo-score" style="color:var(--purple);">84%</div>
+        </div>
+
+        <div class="algo-row">
+          <div class="algo-name">SVM (Doc2Vec)</div>
+          <div class="algo-bar-wrap">
+            <div class="algo-bar" style="--w:82%; width:82%; background:#7c6bd6;"></div>
+          </div>
+          <div class="algo-score" style="color:#7c6bd6;">82%</div>
+        </div>
+
+        <div class="algo-row">
+          <div class="algo-name">Neural Network (Keras)</div>
+          <div class="algo-bar-wrap">
+            <div class="algo-bar" style="--w:80%; width:80%; background:#5a5490;"></div>
+          </div>
+          <div class="algo-score" style="color:#9d94cc;">80%</div>
+        </div>
+
+        <div class="algo-row">
+          <div class="algo-name">Naive Bayes (Doc2Vec)</div>
+          <div class="algo-bar-wrap">
+            <div class="algo-bar" style="--w:72%; width:72%; background:#3a3460;"></div>
+          </div>
+          <div class="algo-score" style="color:var(--muted);">72%</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TECH STACK ── -->
+  <div class="section fade-in-4">
+    <div class="section-label">Technology Stack</div>
+    <div class="tech-grid">
+      <div class="tech-card">
+        <div class="tech-icon" style="background:rgba(240,180,41,0.1); font-size:22px;">🐍</div>
+        <div>
+          <div class="tech-name">Python 3</div>
+          <div class="tech-desc">ML pipeline &amp; backend</div>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon" style="background:rgba(62,207,142,0.1); font-size:22px;">⚗️</div>
+        <div>
+          <div class="tech-name">Flask</div>
+          <div class="tech-desc">REST API server</div>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon" style="background:rgba(240,180,41,0.1); font-size:22px;">🤖</div>
+        <div>
+          <div class="tech-name">Scikit-learn</div>
+          <div class="tech-desc">SVM, Naive Bayes, TF-IDF</div>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon" style="background:rgba(167,139,250,0.1); font-size:22px;">🧠</div>
+        <div>
+          <div class="tech-name">TensorFlow / Keras</div>
+          <div class="tech-desc">LSTM deep learning</div>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon" style="background:rgba(91,141,238,0.1); font-size:22px;">📱</div>
+        <div>
+          <div class="tech-name">Flutter + Dart</div>
+          <div class="tech-desc">Cross-platform mobile app</div>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon" style="background:rgba(240,180,41,0.1); font-size:22px;">🔥</div>
+        <div>
+          <div class="tech-name">Firebase Auth</div>
+          <div class="tech-desc">User authentication</div>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon" style="background:rgba(62,207,142,0.1); font-size:22px;">📝</div>
+        <div>
+          <div class="tech-name">NLTK</div>
+          <div class="tech-desc">Tokenise, stem, lemmatize</div>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon" style="background:rgba(167,139,250,0.1); font-size:22px;">📊</div>
+        <div>
+          <div class="tech-name">Gensim</div>
+          <div class="tech-desc">Doc2Vec embeddings</div>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon" style="background:rgba(255,95,95,0.1); font-size:22px;">🕸️</div>
+        <div>
+          <div class="tech-name">BeautifulSoup</div>
+          <div class="tech-desc">PakWheels web scraping</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <div class="footer">
+    <p>Final Year Project &mdash; Computer Science</p>
+    <p>Built with Python · Flask · Flutter · Firebase · Scikit-learn · TensorFlow</p>
+  </div>
+
+</div>
+</body>
+</html>
